@@ -1,3 +1,13 @@
+# Go binaries
+/cmd/example/example
+*.test
+*.out
+
+# TypeScript coverage and test reports
+ts/coverage/
+junit.xml
+ts/junit.xml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

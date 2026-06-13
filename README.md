@@ -1,138 +1,143 @@
 # archeryutils
 
-[![PyPI - Version](https://img.shields.io/pypi/v/archeryutils)](https://pypi.org/project/archeryutils)
-![GitHub](https://img.shields.io/github/license/jatkinson1000/archeryutils)
-[![Documentation Status](https://readthedocs.org/projects/archeryutils/badge/?version=latest)](https://archeryutils.readthedocs.io/en/latest/?badge=latest)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jatkinson1000/archeryutils/testing.yaml)
-[![codecov](https://codecov.io/gh/jatkinson1000/archeryutils/branch/main/graph/badge.svg?token=AZU7G6H8T0)](https://codecov.io/gh/jatkinson1000/archeryutils)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jatkinson1000/archeryutils/main?labpath=examples.ipynb)
+![GitHub](https://img.shields.io/github/license/retbrown/archeryutils)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/retbrown/archeryutils/testing.yaml)
 
-A collection of archery code and utilities in python.\
-Designed to make the development of archery codes and apps easier.
+> **This is a Go and TypeScript port of [jatkinson1000/archeryutils](https://github.com/jatkinson1000/archeryutils), ported and maintained by [@retbrown](https://github.com/retbrown). The original library is written in Python — all credit for the underlying algorithms, data, and design goes to the upstream authors. This fork is not affiliated with or endorsed by the upstream project.**
+
+A collection of archery utilities in Go and TypeScript, ported from the Python library [archeryutils](https://github.com/jatkinson1000/archeryutils) by Jack Atkinson et al.
+Designed to make the development of archery codes and apps easier, with Go suitable for server-side use and the TypeScript package (`@retbrown/archeryutils`) targeting browser and React Native environments.
 
 Contains:
-- generic representations of targets and rounds
-- World Archery, Archery GB, IFAA, and Archery Australia rounds
-- calculations for Archery GB handicaps and Archery Australia archer skill level
-- calculation of Archery GB classifications
+- Generic representations of targets and rounds
+- World Archery, Archery GB, IFAA, and Archery Australia rounds (embedded JSON)
+- Calculations for Archery GB handicaps and Archery Australia archer skill level
+- Calculation of Archery GB classifications (outdoor, indoor, field, legacy indoor/field)
 
-Full documentation, including an API reference, is available on
-[read the docs](https://archeryutils.readthedocs.io).
+## Upstream
 
+The algorithms, round data, and classification logic in this repository are a port of the Python library [jatkinson1000/archeryutils](https://github.com/jatkinson1000/archeryutils), synced against upstream v3.0.0. If you are working in Python, use the original library directly.
 
-## Try now!
-You can play with this library as a
-[binder instance](https://mybinder.org/v2/gh/jatkinson1000/archeryutils/main?labpath=examples.ipynb)
-right now without installing anything.  
-If you want to use it locally in your own code follow the usage instructions below for
-[installation](#installation) and getting started.
+---
 
-
-## Usage
-Usage is allowed under the [licensing specified](https://github.com/jatkinson1000/archeryutils#license).
-We encourage usage and welcome feature requests.
-It is appreciated if visible credit is given by any projects using `archeryutils`.
+## Go
 
 ### Installation
-To install the library via pip for use in a project you can run:
 
-    pip install archeryutils
+```sh
+go get github.com/retbrown/archeryutils
+```
 
-It is recommended to use a virtual environment.
+Requires Go 1.24+.
 
-If you want a local install that you can edit instead, clone the repository,
-navigate to `archeryutils/`, and run:
+### Packages
 
-    python3 -m pip install -e .
+| Package | Description |
+|---|---|
+| `targets` | `Target`, `ScoringSystem`, `FaceSpec`, distance/diameter quantities |
+| `rounds` | `Pass`, `Round`, embedded round databases (AGB, WA, IFAA, AA) |
+| `length` | Unit conversion helpers (metres, yards, cm, inches) |
+| `handicaps` | AGB, AGBold, AA, AA2 handicap schemes; `HandicapTable` |
+| `classifications` | AGB outdoor, indoor, field, old-indoor, old-field classifications |
 
-or, for full developer dependencies:
+### Quick start
 
-    python3 -m pip install -e .[dev]
+```go
+package main
 
-Please refer to the online documentation for
-[full installation guidance](https://archeryutils.readthedocs.io/en/latest/getting-started/installation.html)
-including optional dependencies for developing and testing.
+import (
+    "fmt"
+    "github.com/retbrown/archeryutils/classifications"
+    "github.com/retbrown/archeryutils/rounds"
+)
 
-### Getting Started
-There are examples of some of the different functionalities in the jupyter notebook
-`examples.ipynb`.
-This can be run from a local install using:
+func main() {
+    r := rounds.AGBOutdoorMetric()["wa1440_90"]
+    class, _ := classifications.CalculateOutdoorClassification(
+        1200, r,
+        classifications.Recurve, classifications.Male, classifications.Adult,
+        true, true,
+    )
+    fmt.Println(class) // e.g. "B1"
+}
+```
 
-    pip install notebook
+```go
+import (
+    "fmt"
+    "github.com/retbrown/archeryutils/handicaps"
+    "github.com/retbrown/archeryutils/rounds"
+)
 
-    jupyter notebook examples.ipynb
+s := handicaps.MustScheme("AGB")
+r := rounds.WAOutdoor()["wa1440_90"]
+h, _ := handicaps.HandicapFromScore(s, 1200, r, 0, true)
+fmt.Printf("Handicap: %.0f\n", h)
+```
 
-Alternatively, you can use it online through the
-[binder instance](https://mybinder.org/v2/gh/jatkinson1000/archeryutils/main?labpath=examples.ipynb)
-as described above.
+### Testing
 
-### License
-Copyright &copy; Jack Atkinson
+```sh
+go test ./...
+go test -race ./...
+```
 
-_archeryutils_ is distributed under the
-[MIT Licence](https://github.com/jatkinson1000/archeryutils/blob/main/LICENSE).
+### Module layout
 
-### Authors and Acknowledgment
-See [Contributors](https://github.com/jatkinson1000/archeryutils/graphs/contributors)
-for a full list of contributors towards this project.
+```
+go.mod
+targets/           target face definitions, scoring systems
+rounds/            pass and round types; embedded JSON round data
+length/            unit conversion
+handicaps/         handicap schemes (AGB, AGBold, AA, AA2), tables
+classifications/   AGB classification calculations + embedded data
+```
 
-If you use this software in your work, please provide visible credit/citation.
-[CITATION.cff](https://github.com/jatkinson1000/archeryutils/blob/main/CITATION.cff)
-provides citation metadata, which can also be accessed from
-[GitHub](https://github.com/jatkinson1000/archeryutils).
+---
 
-### Used by
-The following projects make use of this code or derivatives in some way:
+## TypeScript
 
-- [archerycalculator](https://archerycalculator.co.uk)
-- MyTargets
-- Golden Records
-- Expert Archer
+The `ts/` directory contains `@retbrown/archeryutils`, an npm package built with [tsup](https://tsup.egoist.dev/). It produces ESM and CJS bundles with TypeScript declarations and has no runtime dependencies, making it suitable for browser and React Native projects.
 
-Are we missing anyone? Let us know.
+### Installation
 
-If you make use of *archeryutils* in a commercial product please consider
-[supporting](#support) the project to ensure its continued development and longevity.
+```sh
+npm install @retbrown/archeryutils
+```
 
+### Quick start
 
-## Contributions
-Contributions and collaborations are welcome from anyone with an
-interest in python and archery.
+```ts
+import {
+  waOutdoorRounds, roundMaxScore,
+  newScheme, handicapFromScore,
+  calculateOutdoorClassification,
+  Gender, Age, Bowstyle,
+} from '@retbrown/archeryutils';
 
-Please refer to the online documentation for full
-[contributing guidelines](https://archeryutils.readthedocs.io/en/latest/develop/contributing.html).\
-Read and follow this when opening
-[issues](https://archeryutils.readthedocs.io/en/latest/develop/contributing.html#bug-reports-and-feature-requests)
-or 
-[pull requests](https://archeryutils.readthedocs.io/en/latest/develop/contributing.html#code-contributions).
+const r = waOutdoorRounds().get('wa1440_90')!;
 
-For bugs, feature requests, and clear suggestions for improvement can be documented by
-[opening an issue](https://github.com/jatkinson1000/archeryutils/issues).
-For more abstract ideas for the project please
-[open a discussion](https://github.com/jatkinson1000/archeryutils/discussions).
+// Handicap from score
+const scheme = newScheme('AGB');
+const hc = handicapFromScore(scheme, 1200, r, 0, true);
+console.log(`Handicap: ${hc}`);
 
-If you built something upon _archeryutils_ that would be useful to others, or can
-address an [open issue](https://github.com/jatkinson1000/archeryutils/issues), please
-[fork the repository](https://github.com/jatkinson1000/archeryutils/fork) and open a
-pull request.
+// Classification
+const cls = calculateOutdoorClassification(
+  1200, r, Bowstyle.Recurve, Gender.Male, Age.Adult, true, true,
+);
+console.log(`Classification: ${cls}`); // e.g. "B1"
+```
 
-### Code of Conduct
-Everyone participating in the _archeryutils_ project, and in particular in the
-issue tracker, pull requests, and social media activity, is expected to treat other
-people with respect and more generally to follow the guidelines articulated in the
-[Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/).
+### Testing
 
+```sh
+cd ts
+npm test
+```
 
-## Support
-This project is developed by volunteers for the benefit of the archery community.
-It is dedicated to remain a [FOSS](https://itsfoss.com/what-is-foss/) project.
-The best way to support this project, if you are able, is by directly
-[contributing](https://github.com/jatkinson1000/archeryutils/tree/project-documentation#contributions).
+---
 
-If you are unable to do this, however, financial support towards this and the
-[archerycalculator](https://archerycalculator.co.uk) project can be given through
-[Buy me a coffee](https://www.buymeacoffee.com/jackatkinsr) or
-[donating via paypal](https://www.paypal.com/donate/?hosted_button_id=JEABJ3UJU4XD4).
-This allows me to spend time improving the library.
+## Licence
+
+Licensed under the MIT Licence — see [LICENCE](LICENCE).

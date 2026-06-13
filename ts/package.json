@@ -1,0 +1,41 @@
+{
+  "name": "@retbrown/archeryutils",
+  "version": "1.0.0",
+  "description": "Archery utilities — targets, rounds, handicaps, and AGB classifications. Typescript implementation forked from jatkinson1000/archeryutils",
+  "keywords": [
+    "archery",
+    "handicap",
+    "classification",
+    "AGB"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "4.1.8",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "4.1.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
