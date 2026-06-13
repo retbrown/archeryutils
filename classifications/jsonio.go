@@ -12,7 +12,7 @@ var dataFS embed.FS
 // AgeData holds configuration for one age group.
 type AgeData struct {
 	AgeGroup  string    `json:"age_group"`
-	Open      []float64 `json:"open"`   // previously "male"
+	Open      []float64 `json:"open"` // previously "male"
 	Female    []float64 `json:"female"`
 	Sighted   []float64 `json:"sighted"`
 	Unsighted []float64 `json:"unsighted"`
@@ -21,25 +21,25 @@ type AgeData struct {
 
 // BowstyleData holds configuration for one bowstyle.
 type BowstyleData struct {
-	Bowstyle       string  `json:"bowstyle"`
-	DatumOut       float64 `json:"datum_out"`
-	ClassStepOut   float64 `json:"classStep_out"`
-	GenderStepOut  float64 `json:"genderStep_out"`
-	AgeStepOut     float64 `json:"ageStep_out"`
-	DatumIn        float64 `json:"datum_in"`
-	ClassStepIn    float64 `json:"classStep_in"`
-	GenderStepIn   float64 `json:"genderStep_in"`
-	AgeStepIn      float64 `json:"ageStep_in"`
-	DatumField     float64 `json:"datum_field"`
-	ClassStepField float64 `json:"classStep_field"`
+	Bowstyle        string  `json:"bowstyle"`
+	DatumOut        float64 `json:"datum_out"`
+	ClassStepOut    float64 `json:"classStep_out"`
+	GenderStepOut   float64 `json:"genderStep_out"`
+	AgeStepOut      float64 `json:"ageStep_out"`
+	DatumIn         float64 `json:"datum_in"`
+	ClassStepIn     float64 `json:"classStep_in"`
+	GenderStepIn    float64 `json:"genderStep_in"`
+	AgeStepIn       float64 `json:"ageStep_in"`
+	DatumField      float64 `json:"datum_field"`
+	ClassStepField  float64 `json:"classStep_field"`
 	GenderStepField float64 `json:"genderStep_field"`
-	AgeStepField   float64 `json:"ageStep_field"`
+	AgeStepField    float64 `json:"ageStep_field"`
 }
 
 // ClassificationData holds the class name lists for a system.
 type ClassificationData struct {
-	Location   string   `json:"location"`
-	Classes    []string `json:"classes"`
+	Location    string   `json:"location"`
+	Classes     []string `json:"classes"`
 	ClassesLong []string `json:"classes_long"`
 }
 
@@ -107,26 +107,6 @@ func loadClassesIn() ClassificationData {
 		}
 	})
 	return classInData
-}
-
-// ageDataForAge returns the AgeData for an Age value.
-func ageDataForAge(age Age) AgeData {
-	name := age.String() // e.g. "OVER_50"
-	data := loadAgeData()
-	if d, ok := data[name]; ok {
-		return d
-	}
-	panic("no age data for " + name)
-}
-
-// bowstyleDataFor returns the BowstyleData for a Bowstyle value.
-func bowstyleDataFor(b Bowstyle) BowstyleData {
-	name := b.String() // e.g. "RECURVE"
-	data := loadBowstyleData()
-	if d, ok := data[name]; ok {
-		return d
-	}
-	panic("no bowstyle data for " + name)
 }
 
 // maxDistsForGender returns the max distance list for the given gender from AgeData.

@@ -74,11 +74,11 @@ type Round struct {
 // NewRound creates a Round from a non-empty slice of Passes.
 func NewRound(name string, passes []*Pass, opts ...Option) (*Round, error) {
 	if len(passes) == 0 {
-		return nil, fmt.Errorf("passes must contain at least one Pass object but none supplied.")
+		return nil, fmt.Errorf("passes must contain at least one Pass object but none supplied")
 	}
 	for _, p := range passes {
 		if p == nil {
-			return nil, fmt.Errorf("passes in a Round object should be an iterable of Pass objects.")
+			return nil, fmt.Errorf("passes in a Round object should be an iterable of Pass objects")
 		}
 	}
 
@@ -99,10 +99,10 @@ func NewRound(name string, passes []*Pass, opts ...Option) (*Round, error) {
 // Option configures optional Round fields.
 type Option func(*Round)
 
-func WithCodename(c string) Option  { return func(r *Round) { r.Codename = c } }
-func WithLocation(l string) Option  { return func(r *Round) { s := l; r.Location = &s } }
-func WithBody(b string) Option      { return func(r *Round) { s := b; r.Body = &s } }
-func WithFamily(f string) Option    { return func(r *Round) { s := f; r.Family = &s } }
+func WithCodename(c string) Option { return func(r *Round) { r.Codename = c } }
+func WithLocation(l string) Option { return func(r *Round) { s := l; r.Location = &s } }
+func WithBody(b string) Option     { return func(r *Round) { s := b; r.Body = &s } }
+func WithFamily(f string) Option   { return func(r *Round) { s := f; r.Family = &s } }
 
 // MaxScore returns the maximum score achievable in this round.
 func (r *Round) MaxScore() float64 {
@@ -128,11 +128,11 @@ func (r *Round) MaxDistance() targets.Quantity {
 
 // GetInfo prints a summary of the round's passes to w.
 func (r *Round) GetInfo(w io.Writer) {
-	fmt.Fprintf(w, "A %s consists of %d passes:\n", r.Name, len(r.Passes))
+	_, _ = fmt.Fprintf(w, "A %s consists of %d passes:\n", r.Name, len(r.Passes))
 	for _, p := range r.Passes {
 		diam := p.Target.NativeDiameter()
 		dist := p.Target.NativeDistance()
-		fmt.Fprintf(w, "\t- %d arrows at a %.1f %s target at %.1f %ss.\n",
+		_, _ = fmt.Fprintf(w, "\t- %d arrows at a %.1f %s target at %.1f %ss.\n",
 			p.NArrows, diam.Value, diam.Units, dist.Value, dist.Units)
 	}
 }

@@ -83,10 +83,10 @@ func assignDistsField(bowstyle Bowstyle, ad AgeData) ([]float64, float64) {
 
 	const nClasses = 9
 	minDists := make([]float64, nClasses)
-	for i := 0; i < 6; i++ {
+	for i := range 6 {
 		minDists[i] = minD
 	}
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		v := minD - 10*float64(i+1)
 		if v < 30 {
 			v = 30
@@ -190,13 +190,13 @@ func CalculateFieldClassification(
 			archeryRound = r
 		} else {
 			return "", fmt.Errorf(
-				"This round is not recognised for field classification. (codename=%q)", archeryRound.Codename)
+				"this round is not recognised for field classification (codename=%q)", archeryRound.Codename)
 		}
 	}
 
 	if score < 0 || score > archeryRound.MaxScore() {
 		return "", fmt.Errorf(
-			"Invalid score of %.0f for a %s. Should be in range 0-%.0f.",
+			"invalid score of %.0f for a %s, should be in range 0-%.0f",
 			score, archeryRound.Name, archeryRound.MaxScore(),
 		)
 	}
@@ -242,10 +242,9 @@ func FieldClassificationScores(
 		normName := normaliseFieldRound(roundname)
 		if r, ok := allRounds[normName]; ok {
 			archeryRound = r
-			roundname = normName
 		} else {
 			return nil, fmt.Errorf(
-				"This round is not recognised for field classification. (codename=%q)", roundname)
+				"this round is not recognised for field classification (codename=%q)", roundname)
 		}
 	}
 

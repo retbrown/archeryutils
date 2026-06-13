@@ -60,14 +60,11 @@ var oldFieldScoreTable = map[[3]interface{}][]int{
 }
 
 func CoaxOldFieldGroup(bowstyle Bowstyle, gender Gender, age Age) Category {
-	coaxedAge := age
+	var coaxedAge Age
 	switch age {
-	case Under21, Over50:
-		coaxedAge = Adult
-	case Adult:
+	case Adult, Under21, Over50:
 		coaxedAge = Adult
 	default:
-		// Under18 and younger all map to Under18
 		coaxedAge = Under18
 	}
 	return Category{Bowstyle: bowstyle, Gender: gender, AgeGroup: coaxedAge}
@@ -127,12 +124,12 @@ func CalculateOldFieldClassification(
 	roundname := archeryRound.Codename
 	if _, ok := allRounds[roundname]; !ok {
 		return "", fmt.Errorf(
-			"This round is not recognised for old field classification. (codename=%q)", roundname)
+			"this round is not recognised for old field classification (codename=%q)", roundname)
 	}
 
 	if score < 0 || score > archeryRound.MaxScore() {
 		return "", fmt.Errorf(
-			"Invalid score of %.0f for a %s. Should be in range 0-%.0f.",
+			"invalid score of %.0f for a %s, should be in range 0-%.0f",
 			score, archeryRound.Name, archeryRound.MaxScore(),
 		)
 	}
@@ -172,7 +169,7 @@ func OldFieldClassificationScores(
 	allRounds := allFieldRoundsForOld()
 	if _, ok := allRounds[archeryRound.Codename]; !ok {
 		return nil, fmt.Errorf(
-			"This round is not recognised for old field classification. (codename=%q)", archeryRound.Codename)
+			"this round is not recognised for old field classification (codename=%q)", archeryRound.Codename)
 	}
 
 	gd, err := getOldFieldGroupData(bowstyle, gender, age)

@@ -117,7 +117,7 @@ func TestIndoorClassificationScoresTripleFaces(t *testing.T) {
 func TestIndoorClassificationScoresNonStrict(t *testing.T) {
 	// Frostbite: 36 arrows at 30m 80cm outdoor target — not in indoor round set
 	r, err := rounds.NewRound("Frostbite", []*rounds.Pass{
-		mustOutdoorPass(t, 36, targets.TenZone, targets.CM(80), targets.Metres(30)),
+		mustOutdoorPass(t, targets.CM(80), targets.Metres(30)),
 	})
 	if err != nil {
 		t.Fatalf("NewRound: %v", err)

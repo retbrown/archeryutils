@@ -192,7 +192,7 @@ func TestOutdoorClassificationScoresInvalidBowstyle(t *testing.T) {
 
 func TestOutdoorClassificationScoresInvalidRound(t *testing.T) {
 	r, _ := rounds.NewRound("Custom", []*rounds.Pass{
-		mustOutdoorPass(t, 36, targets.TenZone, targets.CM(122), targets.Metres(70)),
+		mustOutdoorPass(t, targets.CM(122), targets.Metres(70)),
 	})
 	_, err := classifications.OutdoorClassificationScores(r, classifications.Recurve, classifications.Male, classifications.Adult, true, true)
 	if err == nil {
@@ -266,9 +266,9 @@ func TestCoaxOutdoorGroup(t *testing.T) {
 	}
 }
 
-func mustOutdoorPass(t *testing.T, n int, sys targets.ScoringSystem, diam, dist targets.Quantity) *rounds.Pass {
+func mustOutdoorPass(t *testing.T, diam, dist targets.Quantity) *rounds.Pass {
 	t.Helper()
-	p, err := rounds.AtTarget(n, sys, diam, dist, false)
+	p, err := rounds.AtTarget(36, targets.TenZone, diam, dist, false)
 	if err != nil {
 		t.Fatalf("AtTarget: %v", err)
 	}

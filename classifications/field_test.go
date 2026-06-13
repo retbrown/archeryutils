@@ -91,7 +91,7 @@ func TestFieldClassificationScoresBowstyles(t *testing.T) {
 }
 
 func TestFieldClassificationScoresUnmarked(t *testing.T) {
-	// Unmarked should give same scores as marked (normalization)
+	// Unmarked should give same scores as marked (normalisation)
 	r := fieldRound(t, "wa_field_24_blue_unmarked")
 	want := []int{336, 311, 283, 249, 212, 173, 135, 101, 74}
 	got, err := classifications.FieldClassificationScores(r, classifications.Barebow, classifications.Male, classifications.Adult, true, true)
@@ -164,7 +164,7 @@ func TestFieldClassificationScoresInvalidAge(t *testing.T) {
 
 func TestFieldClassificationScoresInvalidRound(t *testing.T) {
 	customRound, _ := rounds.NewRound("Custom", []*rounds.Pass{
-		mustOutdoorPass(t, 36, "10_zone", targets.CM(122), targets.Metres(70)),
+		mustOutdoorPass(t, targets.CM(122), targets.Metres(70)),
 	})
 	_, err := classifications.FieldClassificationScores(customRound, classifications.Recurve, classifications.Male, classifications.Adult, true, true)
 	if err == nil {

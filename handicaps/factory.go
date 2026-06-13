@@ -18,7 +18,7 @@ func NewScheme(name string) (Scheme, error) {
 		return NewHandicapAA2(), nil
 	}
 	return nil, fmt.Errorf(
-		"%s is not a recognised handicap system.\nPlease select from %s.",
+		"%s is not a recognised handicap system, please select from %s",
 		name,
 		"'AGB', 'AGBold', 'AA', 'AA2'",
 	)

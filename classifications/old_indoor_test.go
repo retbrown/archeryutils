@@ -99,7 +99,7 @@ func TestOldIndoorClassificationScoresInvalidRound(t *testing.T) {
 
 func TestOldIndoorClassificationScoresNonStrict(t *testing.T) {
 	// Frostbite: 36 arrows at 30m 80cm outdoor — not an indoor round
-	frostbite := mustOutdoorPass(t, 36, "10_zone", targets.CM(80), targets.Metres(30))
+	frostbite := mustOutdoorPass(t, targets.CM(80), targets.Metres(30))
 	r, err := rounds.NewRound("Frostbite", []*rounds.Pass{frostbite})
 	if err != nil {
 		t.Fatalf("NewRound: %v", err)
@@ -175,4 +175,3 @@ func TestCoaxOldIndoorGroup(t *testing.T) {
 		})
 	}
 }
-

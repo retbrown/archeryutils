@@ -25,9 +25,9 @@ func mustPass(t *testing.T, n int, tgt *targets.Target) *rounds.Pass {
 	return p
 }
 
-func mustAtTarget(t *testing.T, n int, sys targets.ScoringSystem, diam, dist targets.Quantity, indoor bool) *rounds.Pass {
+func mustAtTarget(t *testing.T, n int, sys targets.ScoringSystem, diam, dist targets.Quantity) *rounds.Pass {
 	t.Helper()
-	p, err := rounds.AtTarget(n, sys, diam, dist, indoor)
+	p, err := rounds.AtTarget(n, sys, diam, dist, false)
 	if err != nil {
 		t.Fatalf("AtTarget error: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestPassNilTarget(t *testing.T) {
 }
 
 func TestPassAtTarget(t *testing.T) {
-	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50), false)
+	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50))
 	if p.NArrows != 36 {
 		t.Errorf("NArrows = %d, want 36", p.NArrows)
 	}
@@ -81,16 +81,16 @@ func TestPassString(t *testing.T) {
 }
 
 func TestPassEquality(t *testing.T) {
-	base := mustAtTarget(t, 30, targets.TenZone, targets.CM(40), targets.Yards(20), false)
+	base := mustAtTarget(t, 30, targets.TenZone, targets.CM(40), targets.Yards(20))
 
 	tests := []struct {
 		name  string
 		other *rounds.Pass
 		want  bool
 	}{
-		{"duplicate", mustAtTarget(t, 30, targets.TenZone, targets.CM(40), targets.Yards(20), false), true},
-		{"diff-arrows", mustAtTarget(t, 40, targets.TenZone, targets.CM(40), targets.Yards(20), false), false},
-		{"diff-target", mustAtTarget(t, 30, targets.FiveZone, targets.CM(40), targets.Yards(20), false), false},
+		{"duplicate", mustAtTarget(t, 30, targets.TenZone, targets.CM(40), targets.Yards(20)), true},
+		{"diff-arrows", mustAtTarget(t, 40, targets.TenZone, targets.CM(40), targets.Yards(20)), false},
+		{"diff-target", mustAtTarget(t, 30, targets.FiveZone, targets.CM(40), targets.Yards(20)), false},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -102,14 +102,14 @@ func TestPassEquality(t *testing.T) {
 }
 
 func TestPassDefaultDistanceUnit(t *testing.T) {
-	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50), false)
+	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50))
 	if p.Target.NativeDistance().Units != "metre" {
 		t.Errorf("NativeDistance unit = %q, want metre", p.Target.NativeDistance().Units)
 	}
 }
 
 func TestPassDefaultDiamUnit(t *testing.T) {
-	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50), false)
+	p := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(50))
 	if p.Target.NativeDiameter().Units != "cm" {
 		t.Errorf("NativeDiameter unit = %q, want cm", p.Target.NativeDiameter().Units)
 	}
@@ -138,7 +138,7 @@ func TestPassMaxScore(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(string(tc.system), func(t *testing.T) {
-			p := mustAtTarget(t, 100, tc.system, targets.CM(122), targets.Metres(50), false)
+			p := mustAtTarget(t, 100, tc.system, targets.CM(122), targets.Metres(50))
 			if got := p.MaxScore(); got != tc.want {
 				t.Errorf("MaxScore() = %v, want %v", got, tc.want)
 			}
@@ -149,8 +149,8 @@ func TestPassMaxScore(t *testing.T) {
 // ---- TestRound ----
 
 func TestRoundInitWithVariousIterables(t *testing.T) {
-	passA := mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50), false)
-	passB := mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40), false)
+	passA := mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50))
+	passB := mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40))
 
 	r1 := mustRound(t, "R1", []*rounds.Pass{passA, passB})
 	r2 := mustRound(t, "R2", []*rounds.Pass{passA, passB})
@@ -234,12 +234,12 @@ func TestRoundNArrows(t *testing.T) {
 		want   int
 	}{
 		{[]*rounds.Pass{
-			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50), false),
-			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40), false),
-			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(30), false),
+			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50)),
+			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40)),
+			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(30)),
 		}, 300},
 		{[]*rounds.Pass{
-			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50), false),
+			mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50)),
 		}, 100},
 	}
 	for _, tc := range tests {
@@ -252,9 +252,9 @@ func TestRoundNArrows(t *testing.T) {
 
 func TestRoundMaxScore(t *testing.T) {
 	r := mustRound(t, "R", []*rounds.Pass{
-		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50), false),
-		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40), false),
-		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(30), false),
+		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(50)),
+		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(40)),
+		mustAtTarget(t, 100, targets.FiveZone, targets.CM(122), targets.Metres(30)),
 	})
 	if got := r.MaxScore(); got != 2700 {
 		t.Errorf("MaxScore() = %v, want 2700", got)
@@ -278,9 +278,9 @@ func TestRoundMaxDistance(t *testing.T) {
 				distUnit = "yard"
 			}
 			r := mustRound(t, "R", []*rounds.Pass{
-				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 100, Units: distUnit}, false),
-				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 80, Units: distUnit}, false),
-				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 60, Units: distUnit}, false),
+				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 100, Units: distUnit}),
+				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 80, Units: distUnit}),
+				mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Quantity{Value: 60, Units: distUnit}),
 			})
 			if got := r.MaxDistance().Value; got != tc.want {
 				t.Errorf("MaxDistance().Value = %v, want %v", got, tc.want)
@@ -291,9 +291,9 @@ func TestRoundMaxDistance(t *testing.T) {
 
 func TestRoundMaxDistanceOutOfOrder(t *testing.T) {
 	r := mustRound(t, "R", []*rounds.Pass{
-		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(80), false),
-		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(100), false),
-		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(60), false),
+		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(80)),
+		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(100)),
+		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(60)),
 	})
 	if got := r.MaxDistance().Value; got != 100 {
 		t.Errorf("MaxDistance().Value = %v, want 100", got)
@@ -301,8 +301,8 @@ func TestRoundMaxDistanceOutOfOrder(t *testing.T) {
 }
 
 func TestRoundMaxDistanceMixedUnits(t *testing.T) {
-	pYards := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Yards(80), false)
-	pMetric := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(75), false)
+	pYards := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Yards(80))
+	pMetric := mustAtTarget(t, 36, targets.FiveZone, targets.CM(122), targets.Metres(75))
 	r := mustRound(t, "R", []*rounds.Pass{pYards, pMetric})
 
 	if pMetric.Target.Distance() <= pYards.Target.Distance() {
@@ -315,9 +315,9 @@ func TestRoundMaxDistanceMixedUnits(t *testing.T) {
 
 func TestRoundGetInfo(t *testing.T) {
 	r := mustRound(t, "MyRound", []*rounds.Pass{
-		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(100), false),
-		mustAtTarget(t, 20, targets.FiveZone, targets.CM(122), targets.Yards(80), false),
-		mustAtTarget(t, 30, targets.FiveZone, targets.CM(80), targets.Metres(60), false),
+		mustAtTarget(t, 10, targets.FiveZone, targets.CM(122), targets.Metres(100)),
+		mustAtTarget(t, 20, targets.FiveZone, targets.CM(122), targets.Yards(80)),
+		mustAtTarget(t, 30, targets.FiveZone, targets.CM(80), targets.Metres(60)),
 	})
 
 	var sb strings.Builder

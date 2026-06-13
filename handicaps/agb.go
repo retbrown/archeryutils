@@ -15,10 +15,10 @@ func NewHandicapAGB() *HandicapAGB {
 	return &HandicapAGB{datum: 6.0, step: 3.5, ang0: 5e-4, kd: 0.00365}
 }
 
-func (h *HandicapAGB) Name() string               { return "AGB" }
-func (h *HandicapAGB) Descending() bool            { return true }
+func (h *HandicapAGB) Name() string                    { return "AGB" }
+func (h *HandicapAGB) Descending() bool                { return true }
 func (h *HandicapAGB) ScaleBounds() (float64, float64) { return -75, 300 }
-func (h *HandicapAGB) MaxScoreRoundingLim() float64 { return 1.0 }
+func (h *HandicapAGB) MaxScoreRoundingLim() float64    { return 1.0 }
 func (h *HandicapAGB) ArrowDiameter(indoor bool) float64 {
 	if indoor {
 		return 9.3e-3
@@ -50,11 +50,11 @@ func NewHandicapAGBold() *HandicapAGBold {
 	}
 }
 
-func (h *HandicapAGBold) Name() string               { return "AGBold" }
-func (h *HandicapAGBold) Descending() bool            { return true }
+func (h *HandicapAGBold) Name() string                    { return "AGBold" }
+func (h *HandicapAGBold) Descending() bool                { return true }
 func (h *HandicapAGBold) ScaleBounds() (float64, float64) { return -75, 300 }
-func (h *HandicapAGBold) MaxScoreRoundingLim() float64 { return 0.5 }
-func (h *HandicapAGBold) ArrowDiameter(_ bool) float64 { return 7.14e-3 }
+func (h *HandicapAGBold) MaxScoreRoundingLim() float64    { return 0.5 }
+func (h *HandicapAGBold) ArrowDiameter(_ bool) float64    { return 7.14e-3 }
 func (h *HandicapAGBold) RoundScore(score float64) float64 {
 	return math.Round(score)
 }

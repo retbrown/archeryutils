@@ -83,6 +83,7 @@ func CoaxIndoorGroup(bowstyle Bowstyle, gender Gender, age Age) Category {
 		coaxedBowstyle = Barebow
 	case CompoundLimited, CompoundBarebow:
 		coaxedBowstyle = Compound
+	default:
 	}
 	return Category{Bowstyle: coaxedBowstyle, Gender: gender, AgeGroup: age}
 }
@@ -128,7 +129,7 @@ func CalculateIndoorClassification(
 ) (string, error) {
 	if score < 0 || score > archeryRound.MaxScore() {
 		return "", fmt.Errorf(
-			"Invalid score of %.0f for a %s. Should be in range 0-%.0f.",
+			"invalid score of %.0f for a %s, should be in range 0-%.0f",
 			score, archeryRound.Name, archeryRound.MaxScore(),
 		)
 	}
@@ -173,8 +174,8 @@ func IndoorClassificationScores(
 	if strictRounds {
 		if _, ok := allRounds[roundname]; !ok {
 			return nil, fmt.Errorf(
-				"This round is not recognised for indoor classification. "+
-					"Please select an appropriate option. (codename=%q)", roundname)
+				"this round is not recognised for indoor classification, "+
+					"please select an appropriate option (codename=%q)", roundname)
 		}
 		if bowstyle == Compound {
 			roundname = CompoundCodename(roundname)

@@ -30,14 +30,14 @@ var AllGenders = []Gender{Male, Female, Open}
 type Age uint32
 
 const (
-	Over50   Age = 1 << iota // OVER_50
-	Adult                    // ADULT
-	Under21                  // UNDER_21
-	Under18                  // UNDER_18
-	Under16                  // UNDER_16
-	Under15                  // UNDER_15
-	Under14                  // UNDER_14
-	Under12                  // UNDER_12
+	Over50  Age = 1 << iota // OVER_50
+	Adult                   // ADULT
+	Under21                 // UNDER_21
+	Under18                 // UNDER_18
+	Under16                 // UNDER_16
+	Under15                 // UNDER_15
+	Under14                 // UNDER_14
+	Under12                 // UNDER_12
 )
 
 // AllAges lists every defined Age value in order (oldest to youngest).
@@ -124,7 +124,7 @@ func (b Bowstyle) String() string {
 
 // Category holds the resolved archer category.
 type Category struct {
-	Bowstyle  Bowstyle
-	Gender    Gender
-	AgeGroup  Age
+	Bowstyle Bowstyle
+	Gender   Gender
+	AgeGroup Age
 }

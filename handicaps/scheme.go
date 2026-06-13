@@ -115,13 +115,13 @@ func HandicapFromScore(s Scheme, score float64, rnd *rounds.Round, arwD float64,
 	maxScore := rnd.MaxScore()
 	if score > maxScore {
 		return 0, fmt.Errorf(
-			"The score of %v provided is greater than the maximum of %v for a %s.",
+			"the score of %v provided is greater than the maximum of %v for a %s",
 			score, maxScore, rnd.Name,
 		)
 	}
 	if score <= 0 {
 		return 0, fmt.Errorf(
-			"The score of %v provided is less than or equal to zero so cannot have a handicap.",
+			"the score of %v provided is less than or equal to zero so cannot have a handicap",
 			score,
 		)
 	}
@@ -139,7 +139,7 @@ func HandicapFromScore(s Scheme, score float64, rnd *rounds.Round, arwD float64,
 			handicap = math.Floor(handicap)
 		}
 
-		var hstep float64 = 1.0
+		hstep := 1.0
 		if !s.Descending() {
 			hstep = -1.0
 		}

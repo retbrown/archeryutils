@@ -15,10 +15,10 @@ func NewHandicapAA() *HandicapAA {
 	return &HandicapAA{ang0: 1e-3, k0: 2.37, ks: 0.027, kd: 0.004}
 }
 
-func (h *HandicapAA) Name() string               { return "AA" }
-func (h *HandicapAA) Descending() bool            { return false }
+func (h *HandicapAA) Name() string                    { return "AA" }
+func (h *HandicapAA) Descending() bool                { return false }
 func (h *HandicapAA) ScaleBounds() (float64, float64) { return -250, 175 }
-func (h *HandicapAA) MaxScoreRoundingLim() float64 { return 0.5 }
+func (h *HandicapAA) MaxScoreRoundingLim() float64    { return 0.5 }
 func (h *HandicapAA) ArrowDiameter(indoor bool) float64 {
 	if indoor {
 		return 9.3e-3
@@ -46,10 +46,10 @@ func NewHandicapAA2() *HandicapAA2 {
 	return &HandicapAA2{ang0: 1e-3, k0: 2.57, ks: 0.027, f1: 0.815, f2: 0.185, d0: 50.0}
 }
 
-func (h *HandicapAA2) Name() string               { return "AA2" }
-func (h *HandicapAA2) Descending() bool            { return false }
+func (h *HandicapAA2) Name() string                    { return "AA2" }
+func (h *HandicapAA2) Descending() bool                { return false }
 func (h *HandicapAA2) ScaleBounds() (float64, float64) { return -250, 175 }
-func (h *HandicapAA2) MaxScoreRoundingLim() float64 { return 0.5 }
+func (h *HandicapAA2) MaxScoreRoundingLim() float64    { return 0.5 }
 func (h *HandicapAA2) ArrowDiameter(indoor bool) float64 {
 	if indoor {
 		return 9.3e-3

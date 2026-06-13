@@ -142,10 +142,10 @@ func TestDefinitiveUnits(t *testing.T) {
 func TestParseOptionalUnitsFloat(t *testing.T) {
 	supported := length.Union(length.Metre, length.Yard)
 	tests := []struct {
-		name        string
-		value       any
-		wantVal     float64
-		wantUnit    string
+		name     string
+		value    any
+		wantVal  float64
+		wantUnit string
 	}{
 		{"int-scalar", 10, 10, "metre"},
 		{"float-scalar", 10.1, 10.1, "metre"},

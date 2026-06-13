@@ -136,7 +136,7 @@ func definitiveUnitNames(supported UnitSet) string {
 // no unit is present in value.
 func ParseOptionalUnitsFloat(value any, supported UnitSet, defaultUnit string) (float64, string, error) {
 	if _, ok := supported[defaultUnit]; !ok {
-		return 0, "", fmt.Errorf("Default unit %q must be in supported units", defaultUnit)
+		return 0, "", fmt.Errorf("default unit %q must be in supported units", defaultUnit)
 	}
 
 	var v float64
@@ -170,7 +170,7 @@ func ParseOptionalUnitsFloat(value any, supported UnitSet, defaultUnit string) (
 	}
 
 	if _, ok := supported[unitAlias]; !ok {
-		return 0, "", fmt.Errorf("Unit %q not recognised. Select from %s.", unitAlias, definitiveUnitNames(supported))
+		return 0, "", fmt.Errorf("unit %q not recognised, select from %s", unitAlias, definitiveUnitNames(supported))
 	}
 	defUnit, _ := DefinitiveUnit(unitAlias)
 	return v, defUnit, nil

@@ -15,23 +15,23 @@ type ScoringSystem string
 
 // All scoring systems supported natively.
 const (
-	FiveZone              ScoringSystem = "5_zone"
-	TenZone               ScoringSystem = "10_zone"
-	TenZoneCompound       ScoringSystem = "10_zone_compound"
-	TenZoneSixRing        ScoringSystem = "10_zone_6_ring"
-	TenZoneFiveRing       ScoringSystem = "10_zone_5_ring"
-	TenZoneFiveRingCmpd   ScoringSystem = "10_zone_5_ring_compound"
-	ElevenZone            ScoringSystem = "11_zone"
-	ElevenZoneSixRing     ScoringSystem = "11_zone_6_ring"
-	ElevenZoneFiveRing    ScoringSystem = "11_zone_5_ring"
-	WAField               ScoringSystem = "WA_field"
-	IFAAField             ScoringSystem = "IFAA_field"
-	IFAAFieldExpert       ScoringSystem = "IFAA_field_expert"
-	AANationalField       ScoringSystem = "AA_national_field"
-	BeiterHitMiss         ScoringSystem = "Beiter_hit_miss"
-	Worcester             ScoringSystem = "Worcester"
-	Worcester2Ring        ScoringSystem = "Worcester_2_ring"
-	Custom                ScoringSystem = "Custom"
+	FiveZone            ScoringSystem = "5_zone"
+	TenZone             ScoringSystem = "10_zone"
+	TenZoneCompound     ScoringSystem = "10_zone_compound"
+	TenZoneSixRing      ScoringSystem = "10_zone_6_ring"
+	TenZoneFiveRing     ScoringSystem = "10_zone_5_ring"
+	TenZoneFiveRingCmpd ScoringSystem = "10_zone_5_ring_compound"
+	ElevenZone          ScoringSystem = "11_zone"
+	ElevenZoneSixRing   ScoringSystem = "11_zone_6_ring"
+	ElevenZoneFiveRing  ScoringSystem = "11_zone_5_ring"
+	WAField             ScoringSystem = "WA_field"
+	IFAAField           ScoringSystem = "IFAA_field"
+	IFAAFieldExpert     ScoringSystem = "IFAA_field_expert"
+	AANationalField     ScoringSystem = "AA_national_field"
+	BeiterHitMiss       ScoringSystem = "Beiter_hit_miss"
+	Worcester           ScoringSystem = "Worcester"
+	Worcester2Ring      ScoringSystem = "Worcester_2_ring"
+	Custom              ScoringSystem = "Custom"
 )
 
 // supportedSystems lists every scoring system archeryutils knows by default.
@@ -97,7 +97,7 @@ func NewTarget(system ScoringSystem, diameter, distance Quantity, indoor bool) (
 			names[i] = "'" + string(s) + "'"
 		}
 		return nil, fmt.Errorf(
-			"Invalid Target Face Type specified.\nPlease select from %s.",
+			"invalid target face type specified, please select from %s",
 			strings.Join(names, ", "),
 		)
 	}
@@ -195,7 +195,7 @@ func FromFaceSpec(spec any, diameter, distance Quantity, indoor bool) (*Target, 
 
 func validateAndResolveUnit(unit string, supported length.UnitSet) (string, error) {
 	if _, ok := supported[unit]; !ok {
-		return "", fmt.Errorf("Unit %q not recognised.", unit)
+		return "", fmt.Errorf("unit %q not recognised", unit)
 	}
 	def, _ := length.DefinitiveUnit(unit)
 	return def, nil
@@ -224,9 +224,8 @@ func (t *Target) Indoor() bool { return t.indoor }
 func (t *Target) FaceSpec() (FaceSpec, error) {
 	if t.faceSpec == nil {
 		return nil, fmt.Errorf(
-			"Trying to generate face spec for custom target " +
-				"but no existing spec found: " +
-				"try instantiating with FromFaceSpec instead",
+			"trying to generate face spec for custom target, " +
+				"no existing spec found: use FromFaceSpec instead",
 		)
 	}
 	out := make(FaceSpec, len(t.faceSpec))
@@ -238,13 +237,13 @@ func (t *Target) FaceSpec() (FaceSpec, error) {
 
 // MaxScore returns the maximum score achievable on this target face.
 func (t *Target) MaxScore() float64 {
-	var max float64
+	var maxScore float64
 	for _, v := range t.faceSpec {
-		if float64(v) > max {
-			max = float64(v)
+		if float64(v) > maxScore {
+			maxScore = float64(v)
 		}
 	}
-	return max
+	return maxScore
 }
 
 // MinScore returns the minimum score achievable on this target face (excluding miss).
@@ -252,13 +251,13 @@ func (t *Target) MinScore() float64 {
 	if len(t.faceSpec) == 0 {
 		return 0
 	}
-	min := math.MaxFloat64
+	minScore := math.MaxFloat64
 	for _, v := range t.faceSpec {
-		if float64(v) < min {
-			min = float64(v)
+		if float64(v) < minScore {
+			minScore = float64(v)
 		}
 	}
-	return min
+	return minScore
 }
 
 // String returns a human-readable representation of the Target.
@@ -360,7 +359,7 @@ func GenFaceSpec(system ScoringSystem, diameter float64) (FaceSpec, error) {
 		}
 
 	default:
-		return nil, fmt.Errorf("Scoring system %q is not supported", system)
+		return nil, fmt.Errorf("scoring system %q is not supported", system)
 	}
 
 	return spec, nil

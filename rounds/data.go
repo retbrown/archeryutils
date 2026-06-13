@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
-	"strings"
 	"sync"
 
 	"github.com/retbrown/archeryutils/targets"
@@ -125,15 +124,8 @@ func LoadFromFS(fsys fs.FS, filenames ...string) (map[string]*Round, error) {
 	return out, nil
 }
 
-// normaliseFilename ensures the filename ends in .json.
-func normaliseFilename(name string) string {
-	if !strings.HasSuffix(name, ".json") {
-		return name + ".json"
-	}
-	return name
-}
-
 // Embedded data files —- these are loaded once.
+//
 //go:embed data
 var dataFS embed.FS
 

@@ -11,19 +11,6 @@ import (
 
 // ---- Shared test rounds ----
 
-func makeYork(t *testing.T) *rounds.Round {
-	t.Helper()
-	r, err := rounds.NewRound("York", []*rounds.Pass{
-		mustAtTarget(t, 72, targets.FiveZone, targets.CM(122), targets.Yards(100), false),
-		mustAtTarget(t, 48, targets.FiveZone, targets.CM(122), targets.Yards(80), false),
-		mustAtTarget(t, 24, targets.FiveZone, targets.CM(122), targets.Yards(60), false),
-	})
-	if err != nil {
-		t.Fatalf("York: %v", err)
-	}
-	return r
-}
-
 func makeWA720_70(t *testing.T) *rounds.Round {
 	t.Helper()
 	r, err := rounds.NewRound("WA 720 70m", []*rounds.Pass{

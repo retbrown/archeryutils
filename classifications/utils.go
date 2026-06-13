@@ -35,18 +35,18 @@ func StripSpots(roundname string) string {
 // CompoundCodename converts indoor rounds with special compound scoring to their compound variants.
 func CompoundCodename(codename string) string {
 	conv := map[string]string{
-		"bray_i":               "bray_i_compound",
-		"bray_i_triple":        "bray_i_compound_triple",
-		"bray_ii":              "bray_ii_compound",
-		"bray_ii_triple":       "bray_ii_compound_triple",
-		"stafford":             "stafford_compound",
-		"portsmouth":           "portsmouth_compound",
-		"portsmouth_triple":    "portsmouth_compound_triple",
-		"vegas":                "vegas_compound",
-		"wa18":                 "wa18_compound",
-		"wa18_triple":          "wa18_compound_triple",
-		"wa25":                 "wa25_compound",
-		"wa25_triple":          "wa25_compound_triple",
+		"bray_i":            "bray_i_compound",
+		"bray_i_triple":     "bray_i_compound_triple",
+		"bray_ii":           "bray_ii_compound",
+		"bray_ii_triple":    "bray_ii_compound_triple",
+		"stafford":          "stafford_compound",
+		"portsmouth":        "portsmouth_compound",
+		"portsmouth_triple": "portsmouth_compound_triple",
+		"vegas":             "vegas_compound",
+		"wa18":              "wa18_compound",
+		"wa18_triple":       "wa18_compound_triple",
+		"wa25":              "wa25_compound",
+		"wa25_triple":       "wa25_compound_triple",
 	}
 	if alt, ok := conv[codename]; ok {
 		return alt
@@ -68,14 +68,6 @@ func classHCs(datum, deltaHCAgeGender, classStep float64, n int) []float64 {
 		hcs[i] = datum + deltaHCAgeGender + float64(i-2)*classStep
 	}
 	return hcs
-}
-
-// minF returns the minimum of two float64 values.
-func minF(a, b float64) float64 {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 // minInts returns the minimum of a slice of floats.

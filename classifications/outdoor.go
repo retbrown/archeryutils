@@ -11,11 +11,11 @@ import (
 
 // outdoorGroupData stores the classification config for one outdoor category.
 type outdoorGroupData struct {
-	classes       []string
-	classesLong   []string
-	classHC       []float64
-	minDists      []float64
-	maxDists      []float64
+	classes        []string
+	classesLong    []string
+	classHC        []float64
+	minDists       []float64
+	maxDists       []float64
 	prestigeRounds []string
 }
 
@@ -160,10 +160,12 @@ func assignOutdoorPrestige(bowstyle Bowstyle, gender Gender, age Age, maxDists [
 		}
 		// Open 50+/U18/U16 get extra 720 variant
 		if gender == Open || gender == Male {
-			if age == Over50 || age == Under18 {
+			switch age {
+			case Over50, Under18:
 				prestige = append(prestige, prestige720[1])
-			} else if age == Under16 {
+			case Under16:
 				prestige = append(prestige, prestige720[2])
+			default:
 			}
 		}
 	}
@@ -192,6 +194,7 @@ func CoaxOutdoorGroup(bowstyle Bowstyle, gender Gender, age Age) Category {
 		coaxedBowstyle = Barebow
 	case CompoundLimited, CompoundBarebow:
 		coaxedBowstyle = Compound
+	default:
 	}
 	return Category{Bowstyle: coaxedBowstyle, Gender: gender, AgeGroup: age}
 }
@@ -250,7 +253,7 @@ func CalculateOutdoorClassification(
 ) (string, error) {
 	if score < 0 || score > archeryRound.MaxScore() {
 		return "", fmt.Errorf(
-			"Invalid score of %.0f for a %s. Should be in range 0-%.0f.",
+			"invalid score of %.0f for a %s, should be in range 0-%.0f",
 			score, archeryRound.Name, archeryRound.MaxScore(),
 		)
 	}
@@ -296,8 +299,8 @@ func OutdoorClassificationScores(
 	if strictRounds {
 		if _, ok := allRounds[roundname]; !ok {
 			return nil, fmt.Errorf(
-				"This round is not recognised for outdoor classification. "+
-					"Please select an appropriate option. (codename=%q)", roundname)
+				"this round is not recognised for outdoor classification, "+
+					"please select an appropriate option (codename=%q)", roundname)
 		}
 		// Strip spots variant to get base round
 		baseCodename := StripSpots(roundname)
@@ -356,7 +359,7 @@ func OutdoorClassificationScores(
 				}
 			}
 		}
-		if !(strictRounds && isPrestige) {
+		if !strictRounds || !isPrestige {
 			roundMaxDist := archeryRound.MaxDistance().Value
 			for i := range classScores {
 				if gd.minDists[i] > roundMaxDist {

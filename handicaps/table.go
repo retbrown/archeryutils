@@ -130,7 +130,7 @@ func (ht *HandicapTable) cleanRepeated() {
 		}
 	}
 
-	for r := 0; r < n-1; r++ {
+	for r := range n - 1 {
 		for c := 1; c < ncols; c++ {
 			if ht.tableF[r][c] == ht.tableF[r+1][c] {
 				if ht.IntPrec {
@@ -164,11 +164,11 @@ func reverseRows2I(t [][]int) {
 // Format writes the formatted handicap table to w.
 func (ht *HandicapTable) Format(w io.Writer) {
 	// Header
-	fmt.Fprint(w, rjust("Handicap", 14))
+	_, _ = fmt.Fprint(w, rjust("Handicap"))
 	for _, rnd := range ht.RoundList {
-		fmt.Fprint(w, rjust(abbreviate(rnd.Name), 14))
+		_, _ = fmt.Fprint(w, rjust(abbreviate(rnd.Name)))
 	}
-	fmt.Fprintln(w)
+	_, _ = fmt.Fprintln(w)
 
 	// Determine handicap decimal places
 	hcDP := 0
@@ -189,9 +189,9 @@ func (ht *HandicapTable) Format(w io.Writer) {
 	for ri, h := range ht.Handicaps {
 		// Handicap cell
 		if hcDP == 0 {
-			fmt.Fprintf(w, "%14d", int(h))
+			_, _ = fmt.Fprintf(w, "%14d", int(h))
 		} else {
-			fmt.Fprintf(w, "%14.*f", hcDP, h)
+			_, _ = fmt.Fprintf(w, "%14.*f", hcDP, h)
 		}
 
 		// Score cells
@@ -199,20 +199,20 @@ func (ht *HandicapTable) Format(w io.Writer) {
 			if ht.IntPrec {
 				v := ht.tableI[ri][ci+1]
 				if v == fillInt {
-					fmt.Fprint(w, rjust("", 14))
+					_, _ = fmt.Fprint(w, rjust(""))
 				} else {
-					fmt.Fprintf(w, "%14d", v)
+					_, _ = fmt.Fprintf(w, "%14d", v)
 				}
 			} else {
 				v := ht.tableF[ri][ci+1]
 				if math.IsNaN(v) {
-					fmt.Fprint(w, rjust("", 14))
+					_, _ = fmt.Fprint(w, rjust(""))
 				} else {
-					fmt.Fprintf(w, "%14.8f", v)
+					_, _ = fmt.Fprintf(w, "%14.8f", v)
 				}
 			}
 		}
-		fmt.Fprintln(w)
+		_, _ = fmt.Fprintln(w)
 	}
 }
 
@@ -261,11 +261,13 @@ func (ht *HandicapTable) WriteCSV(w io.Writer) error {
 	return cw.Error()
 }
 
-func rjust(s string, width int) string {
-	if len(s) >= width {
+const rjustWidth = 14
+
+func rjust(s string) string {
+	if len(s) >= rjustWidth {
 		return s
 	}
-	return strings.Repeat(" ", width-len(s)) + s
+	return strings.Repeat(" ", rjustWidth-len(s)) + s
 }
 
 func abbreviate(name string) string {

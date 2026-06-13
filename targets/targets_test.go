@@ -38,9 +38,9 @@ func TestTargetEquality(t *testing.T) {
 	base := mustTarget(t, targets.TenZone, targets.CM(40), targets.Metres(20), true)
 
 	tests := []struct {
-		name   string
-		args   func() *targets.Target
-		want   bool
+		name string
+		args func() *targets.Target
+		want bool
 	}{
 		{"duplicate", func() *targets.Target {
 			return mustTarget(t, targets.TenZone, targets.CM(40), targets.Metres(20), true)
@@ -83,8 +83,8 @@ func TestTargetInvalidSystem(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error for invalid system")
 	}
-	if !strings.Contains(err.Error(), "Invalid Target Face Type specified") {
-		t.Errorf("error %q does not mention 'Invalid Target Face Type specified'", err.Error())
+	if !strings.Contains(err.Error(), "invalid target face type specified") {
+		t.Errorf("error %q does not mention 'invalid target face type specified'", err.Error())
 	}
 }
 
@@ -288,7 +288,7 @@ func TestTargetFaceSpecWrongConstructor(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error accessing face spec on Custom target with no spec")
 	}
-	if !strings.Contains(err.Error(), "Trying to generate face spec for custom target") {
+	if !strings.Contains(err.Error(), "trying to generate face spec for custom target") {
 		t.Errorf("unexpected error: %v", err)
 	}
 }

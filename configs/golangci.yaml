@@ -64,6 +64,8 @@ linters:
     - usetesting
     - wastedassign
   settings:
+    exhaustive:
+      default-signifies-exhaustive: true
     gocyclo:
       min-complexity: 150
     depguard:
