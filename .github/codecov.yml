@@ -10,7 +10,3 @@ flags:
     paths:
       - "**/*.go"
     carryforward: true
-  typescript:
-    paths:
-      - "ts/src/**"
-    carryforward: true

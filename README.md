@@ -3,10 +3,10 @@
 ![GitHub](https://img.shields.io/github/license/retbrown/archeryutils)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/retbrown/archeryutils/testing.yaml)
 
-> **This is a Go and TypeScript port of [jatkinson1000/archeryutils](https://github.com/jatkinson1000/archeryutils), ported and maintained by [@retbrown](https://github.com/retbrown). The original library is written in Python — all credit for the underlying algorithms, data, and design goes to the upstream authors. This fork is not affiliated with or endorsed by the upstream project.**
+> **This is a Go port of [jatkinson1000/archeryutils](https://github.com/jatkinson1000/archeryutils), ported and maintained by [@retbrown](https://github.com/retbrown). The original library is written in Python — all credit for the underlying algorithms, data, and design goes to the upstream authors. This fork is not affiliated with or endorsed by the upstream project.**
 
-A collection of archery utilities in Go and TypeScript, ported from the Python library [archeryutils](https://github.com/jatkinson1000/archeryutils) by Jack Atkinson et al.
-Designed to make the development of archery codes and apps easier, with Go suitable for server-side use and the TypeScript package (`@retbrown/archeryutils`) targeting browser and React Native environments.
+A collection of archery utilities in Go, ported from the Python library [archeryutils](https://github.com/jatkinson1000/archeryutils) by Jack Atkinson et al.
+Designed to make the development of archery codes and apps easier.
 
 Contains:
 - Generic representations of targets and rounds
@@ -91,49 +91,6 @@ rounds/            pass and round types; embedded JSON round data
 length/            unit conversion
 handicaps/         handicap schemes (AGB, AGBold, AA, AA2), tables
 classifications/   AGB classification calculations + embedded data
-```
-
----
-
-## TypeScript
-
-The `ts/` directory contains `@retbrown/archeryutils`, an npm package built with [tsup](https://tsup.egoist.dev/). It produces ESM and CJS bundles with TypeScript declarations and has no runtime dependencies, making it suitable for browser and React Native projects.
-
-### Installation
-
-```sh
-npm install @retbrown/archeryutils
-```
-
-### Quick start
-
-```ts
-import {
-  waOutdoorRounds, roundMaxScore,
-  newScheme, handicapFromScore,
-  calculateOutdoorClassification,
-  Gender, Age, Bowstyle,
-} from '@retbrown/archeryutils';
-
-const r = waOutdoorRounds().get('wa1440_90')!;
-
-// Handicap from score
-const scheme = newScheme('AGB');
-const hc = handicapFromScore(scheme, 1200, r, 0, true);
-console.log(`Handicap: ${hc}`);
-
-// Classification
-const cls = calculateOutdoorClassification(
-  1200, r, Bowstyle.Recurve, Gender.Male, Age.Adult, true, true,
-);
-console.log(`Classification: ${cls}`); // e.g. "B1"
-```
-
-### Testing
-
-```sh
-cd ts
-npm test
 ```
 
 ---

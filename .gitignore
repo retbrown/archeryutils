@@ -3,10 +3,8 @@
 *.test
 *.out
 
-# TypeScript coverage and test reports
-ts/coverage/
+# Test reports
 junit.xml
-ts/junit.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

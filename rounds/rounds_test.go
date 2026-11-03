@@ -355,3 +355,47 @@ func TestLoadAllRounds(t *testing.T) {
 		t.Errorf("AllRounds() = %d rounds, want at least 50", len(all))
 	}
 }
+
+func TestMiscellaneousShortDistanceRounds(t *testing.T) {
+	tests := []struct {
+		codename string
+		name     string
+		family   string
+		nArrows  int
+		maxScore float64
+		distance float64
+		units    string
+	}{
+		{"misc_3_doz_10m_122cm", "3 Doz @ 10m (122cm)", "distance_metric", 36, 360, 10, "metre"},
+		{"misc_2_doz_15y_122cm", "2 Doz @ 15y (122cm)", "distance_imperial", 24, 120, 15, "yard"},
+		{"misc_2_doz_10y_122cm", "2 Doz @ 10y (122cm)", "distance_imperial", 24, 120, 10, "yard"},
+	}
+	misc := rounds.Miscellaneous()
+	for _, tc := range tests {
+		t.Run(tc.codename, func(t *testing.T) {
+			r, ok := misc[tc.codename]
+			if !ok {
+				t.Fatalf("Miscellaneous() missing %s", tc.codename)
+			}
+			if r.Name != tc.name {
+				t.Errorf("Name = %q, want %q", r.Name, tc.name)
+			}
+			if r.Family == nil || *r.Family != tc.family {
+				t.Errorf("Family = %v, want %q", r.Family, tc.family)
+			}
+			if r.Location == nil || *r.Location != "outdoor" {
+				t.Errorf("Location = %v, want outdoor", r.Location)
+			}
+			if r.NArrows != tc.nArrows {
+				t.Errorf("NArrows = %d, want %d", r.NArrows, tc.nArrows)
+			}
+			if got := r.MaxScore(); got != tc.maxScore {
+				t.Errorf("MaxScore() = %v, want %v", got, tc.maxScore)
+			}
+			d := r.MaxDistance()
+			if d.Value != tc.distance || d.Units != tc.units {
+				t.Errorf("MaxDistance() = %v %s, want %v %s", d.Value, d.Units, tc.distance, tc.units)
+			}
+		})
+	}
+}
