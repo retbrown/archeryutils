@@ -367,8 +367,8 @@ func TestMiscellaneousShortDistanceRounds(t *testing.T) {
 		units    string
 	}{
 		{"misc_3_doz_10m_122cm", "3 Doz @ 10m (122cm)", "distance_metric", 36, 360, 10, "metre"},
-		{"misc_2_doz_15y_122cm", "2 Doz @ 15y (122cm)", "distance_imperial", 24, 120, 15, "yard"},
-		{"misc_2_doz_10y_122cm", "2 Doz @ 10y (122cm)", "distance_imperial", 24, 120, 10, "yard"},
+		{"misc_2_doz_15y_122cm", "2 Doz @ 15y (122cm)", "distance_imperial", 24, 216, 15, "yard"},
+		{"misc_2_doz_10y_122cm", "2 Doz @ 10y (122cm)", "distance_imperial", 24, 216, 10, "yard"},
 	}
 	misc := rounds.Miscellaneous()
 	for _, tc := range tests {
